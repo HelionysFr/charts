@@ -102,7 +102,7 @@ questions:
                             description: "This port exposes the container port on the service"
                             schema:
                               type: int
-                              default: 3000
+                              default: 3
                               required: true
                           - variable: advanced
                             label: "Show Advanced settings"

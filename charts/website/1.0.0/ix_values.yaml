@@ -1,4 +1,0 @@
-image:
-  pullPolicy: IfNotPresent
-  repository: helionys/website
-  tag: 1.0.0
