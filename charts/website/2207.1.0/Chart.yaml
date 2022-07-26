@@ -1,6 +1,6 @@
 apiVersion: v2
-name: my web site
-description: my web site
+name: ix-chart
+description: A Helm chart for deploying simple workloads Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
