@@ -1,1 +1,10 @@
+apiVersion: v2
+appVersion: 2022.7.6
+
 version: 1.0.0
+
+keywords:
+- webapp
+name: webapp
+
+description: my web app
