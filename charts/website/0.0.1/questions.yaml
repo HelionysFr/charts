@@ -125,12 +125,13 @@ questions:
           schema:
             type: string
             required: true
+            default: "helionys/website"
         - variable: tag
           description: "Tag to use for specified image"
           label: "Image Tag"
           schema:
             type: string
-            default: "latest"
+            default: "1.0.0"
         - variable: pullPolicy
           description: "Docker Image Pull Policy"
           label: "Image Pull Policy"
