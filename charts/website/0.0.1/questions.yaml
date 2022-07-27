@@ -26,7 +26,7 @@ groups:
   - name: "Portal Configuration"
     description: "Configure UI web portal"
   - name: "Ingress"
-    description: "Ingress"
+    description: "Ingress Configuration"
 
 
 questions:
@@ -445,25 +445,67 @@ questions:
                       description: "UDP Protocol"
 
   - variable: ingress
-    label: "Ingress"
+    label: ""
     group: "Ingress"
     schema:
+      additional_attrs: true
       type: dict
       attrs:
         - variable: main
           label: "Main Ingress"
           schema:
+            additional_attrs: true
             type: dict
             attrs:
-# Include{ingressDefault}
-
-# Include{ingressTLS}
-
-# Include{ingressTraefik}
-
-# Include{ingressExpert}
-
-# Include{ingressList}
+              - variable: enabled
+                label: "Enable Ingress"
+                schema:
+                  type: boolean
+                  default: false
+                  show_subquestions_if: true
+                  subquestions:
+                    - variable: hosts
+                      label: "Hosts"
+                      schema:
+                        type: list
+                        default: []
+                        items:
+                          - variable: hostEntry
+                            label: "Host"
+                            schema:
+                              additional_attrs: true
+                              type: dict
+                              attrs:
+                                - variable: host
+                                  label: "HostName"
+                                  schema:
+                                    type: string
+                                    default: ""
+                                    required: true
+                                - variable: paths
+                                  label: "Paths"
+                                  schema:
+                                    type: list
+                                    default: []
+                                    items:
+                                      - variable: pathEntry
+                                        label: "Host"
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: path
+                                              label: "path"
+                                              schema:
+                                                type: string
+                                                required: true
+                                                default: "/"
+                                            - variable: pathType
+                                              label: "pathType"
+                                              schema:
+                                                type: string
+                                                required: true
+                                                default: "Prefix"
 
   # Storage Options
   # Host path based volumes
