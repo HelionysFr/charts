@@ -7,8 +7,6 @@ groups:
     description: "Set the environment that will be visible to the container"
   - name: "Networking and Services"
     description: "Configure Network and Services for container"
-  - name: "Port Forwarding"
-    description: "Configure ports to forward to workload"
   - name: "Storage"
     description: "Persist and share data that is separate from the lifecycle of the container"
   - name: "Health Check"
