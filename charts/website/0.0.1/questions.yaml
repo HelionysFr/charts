@@ -25,6 +25,9 @@ groups:
     description: "Set CPU/memory limits for Kubernetes Pod"
   - name: "Portal Configuration"
     description: "Configure UI web portal"
+  - name: "Ingress"
+    description: "Ingress"
+
 
 questions:
   - variable: enableUIPortal
