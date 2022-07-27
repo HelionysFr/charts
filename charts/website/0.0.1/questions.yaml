@@ -445,7 +445,7 @@ questions:
                       description: "UDP Protocol"
 
   - variable: ingress
-    label: ""
+    label: "ingress"
     group: "Ingress"
     schema:
       additional_attrs: true
