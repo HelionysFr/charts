@@ -5,8 +5,8 @@ groups:
     description: "Configuration of the executable that will be run when the container is started"
   - name: "Container Environment Variables"
     description: "Set the environment that will be visible to the container"
-  - name: "Networking"
-    description: "Configure networking for container"
+  - name: "Networking and Services"
+    description: "Configure Network and Services for container"
   - name: "Port Forwarding"
     description: "Configure ports to forward to workload"
   - name: "Storage"
@@ -231,11 +231,11 @@ questions:
                   type: string
                   required: true
 
-  # Networking options
+  # Networking and Services options
   - variable: externalInterfaces
     description: "Add External Interfaces"
     label: "Add external Interfaces"
-    group: "Networking"
+    group: "Networking and Services"
     schema:
       type: list
       items:
@@ -308,10 +308,237 @@ questions:
                                           cidr: false
                                           required: true
 
+- variable: service
+    group: "Networking and Services and Services"
+    label: "Configure Service(s)"
+    schema:
+      additional_attrs: true
+      type: dict
+      attrs:
+        - variable: main
+          label: "Main Service"
+          description: "The Primary service on which the healthcheck runs, often the webUI"
+          schema:
+            additional_attrs: true
+            type: dict
+            attrs:
+              - variable: enabled
+                label: "Enable the service"
+                schema:
+                  type: boolean
+                  default: true
+                  hidden: true
+              - variable: type
+                label: "Service Type"
+                description: "ClusterIP's are only internally available, node
+                s expose the container to the host node System, Loadbalancer exposes the service using the system loadbalancer"
+                schema:
+                  type: string
+                  default: "Simple"
+                  enum:
+                    - value: "Simple"
+                      description: "Simple"
+                    - value: "ClusterIP"
+                      description: "ClusterIP"
+                    - value: "NodePort"
+                      description: "NodePort (Advanced)"
+                    - value: "LoadBalancer"
+                      description: "LoadBalancer (Advanced)"
+              - variable: loadBalancerIP
+                label: "LoadBalancer IP"
+                description: "LoadBalancerIP"
+                schema:
+                  show_if: [["type", "=", "LoadBalancer"]]
+                  type: string
+                  default: ""
+              - variable: externalIPs
+                label: "External IP's"
+                description: "External IP's"
+                schema:
+                  show_if: [["type", "=", "LoadBalancer"]]
+                  type: list
+                  default: []
+                  items:
+                    - variable: externalIP
+                      label: "External IP"
+                      schema:
+                        type: string
+              - variable: ipFamilyPolicy
+                label: "IP Family Policy"
+                description: "(Advanced) Specify the ip policy"
+                schema:
+                  show_if: [["type", "!=", "Simple"]]
+                  type: string
+                  default: "SingleStack"
+                  enum:
+                    - value: "SingleStack"
+                      description: "SingleStack"
+                    - value: "PreferDualStack"
+                      description: "PreferDualStack"
+                    - value: "RequireDualStack"
+                      description: "RequireDualStack"
+              - variable: ipFamilies
+                label: "(advanced) IP families"
+                description: "(advanced) The ip families that should be used"
+                schema:
+                  show_if: [["type", "!=", "Simple"]]
+                  type: list
+                  default: []
+                  items:
+                    - variable: ipFamily
+                      label: "IP family"
+                      schema:
+                        type: string
+              - variable: ports
+                label: "Service's Port(s) Configuration"
+                schema:
+                  additional_attrs: true
+                  type: dict
+                  attrs:
+                    - variable: main
+                      label: "Main Service Port Configuration"
+                      schema:
+                        additional_attrs: true
+                        type: dict
+                        attrs:
+                          - variable: port
+                            label: "Port"
+                            description: "This port exposes the container port on the service"
+                            schema:
+                              type: int
+                              default: 3000
+                              required: true
+                          - variable: advanced
+                            label: "Show Advanced settings"
+                            schema:
+                              type: boolean
+                              default: false
+                              show_subquestions_if: true
+                              subquestions:
+                                - variable: protocol
+                                  label: "Port Type"
+                                  schema:
+                                    type: string
+                                    default: "HTTP"
+                                    enum:
+                                      - value: HTTP
+                                        description: "HTTP"
+                                      - value: "HTTPS"
+                                        description: "HTTPS"
+                                      - value: TCP
+                                        description: "TCP"
+                                      - value: "UDP"
+                                        description: "UDP"
+                                - variable: nodePort
+                                  label: "Node Port (Optional)"
+                                  description: "This port gets exposed to the node. Only considered when service type is NodePort, Simple or LoadBalancer"
+                                  schema:
+                                    type: int
+                                    min: 9000
+                                    max: 65535
+                                - variable: targetPort
+                                  label: "Target Port"
+                                  description: "The internal(!) port on the container the Application runs on"
+                                  schema:
+                                    type: int
+                                    default: 3000
+
+  - variable: serviceexpert
+    group: "Networking and Services and Services"
+    label: "Show Expert Config"
+    schema:
+      type: boolean
+      default: false
+      show_subquestions_if: true
+      subquestions:
+        - variable: hostNetwork
+          group: "Networking and Services and Services"
+          label: "Host-Networking and Services (Complicated)"
+          schema:
+            type: boolean
+            default: false
+
+        - variable: externalInterfaces
+          description: "Add External Interfaces"
+          label: "Add external Interfaces"
+          group: "Networking and Services"
+          schema:
+            type: list
+            items:
+              - variable: interfaceConfiguration
+                description: "Interface Configuration"
+                label: "Interface Configuration"
+                schema:
+                  type: dict
+                  $ref:
+                    - "normalize/interfaceConfiguration"
+                  attrs:
+                    - variable: hostInterface
+                      description: "Please specify host interface"
+                      label: "Host Interface"
+                      schema:
+                        type: string
+                        required: true
+                        $ref:
+                          - "definitions/interface"
+                    - variable: ipam
+                      description: "Define how IP Address will be managed"
+                      label: "IP Address Management"
+                      schema:
+                        type: dict
+                        required: true
+                        attrs:
+                          - variable: type
+                            description: "Specify type for IPAM"
+                            label: "IPAM Type"
+                            schema:
+                              type: string
+                              required: true
+                              enum:
+                                - value: "dhcp"
+                                  description: "Use DHCP"
+                                - value: "static"
+                                  description: "Use static IP"
+                              show_subquestions_if: "static"
+                              subquestions:
+                                - variable: staticIPConfigurations
+                                  label: "Static IP Addresses"
+                                  schema:
+                                    type: list
+                                    items:
+                                      - variable: staticIP
+                                        label: "Static IP"
+                                        schema:
+                                          type: ipaddr
+                                          cidr: true
+                                - variable: staticRoutes
+                                  label: "Static Routes"
+                                  schema:
+                                    type: list
+                                    items:
+                                      - variable: staticRouteConfiguration
+                                        label: "Static Route Configuration"
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: destination
+                                              label: "Destination"
+                                              schema:
+                                                type: ipaddr
+                                                cidr: true
+                                                required: true
+                                            - variable: gateway
+                                              label: "Gateway"
+                                              schema:
+                                                type: ipaddr
+                                                cidr: false
+                                                required: true
+
   - variable: dnsPolicy
     label: "DNS Policy"
     description: "Default behaviour is where Pod inherits the name resolution configuration from the node that the pods run on, if None is specified, It allows a Pod to ignore DNS settings from the Kubernetes environment."
-    group: "Networking"
+    group: "Networking and Services"
     schema:
       type: string
       default: "Default"
@@ -329,7 +556,7 @@ questions:
           description: "Ignore DNS settings from the Kubernetes cluster"
   - variable: dnsConfig
     label: "DNS Configuration"
-    group: "Networking"
+    group: "Networking and Services"
     description: "Specify custom DNS configuration which will be applied to the pod"
     schema:
       type: dict
@@ -377,7 +604,7 @@ questions:
 
   - variable: hostNetwork
     label: "Provide access to node network namespace for the workload"
-    group: "Networking"
+    group: "Networking and Services"
     schema:
       type: boolean
       default: false
@@ -386,7 +613,7 @@ questions:
   - variable: hostPortsList
     label: "Specify host ports for the workload"
     description: "Only use host ports if scaling of a workload is not required"
-    group: "Networking"
+    group: "Networking and Services"
     schema:
       show_if: [["updateStrategy", "=", "Recreate"]]
       type: list
