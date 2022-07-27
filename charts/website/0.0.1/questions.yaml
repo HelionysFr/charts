@@ -9,8 +9,6 @@ groups:
     description: "Ingress Configuration"
   - name: "Resources and Devices"
     description: "Specify resources/devices to be allocated to workload"
-  - name: "Middlewares"
-    description: "Traefik Middlewares"
   - name: "Addons"
     description: "Addon Configuration"
   - name: "Advanced"
@@ -542,78 +540,6 @@ questions:
                         type: string
                         default: "websecure"
                         required: true
-                    - variable: middlewares
-                      label: "Traefik Middlewares"
-                      description: "Add previously created Traefik Middlewares to this Ingress"
-                      schema:
-                        type: list
-                        default: []
-                        items:
-                          - variable: name
-                            label: "Name"
-                            schema:
-                              type: string
-                              default: ""
-                              required: true
-
-              - variable: expert
-                label: "Show Expert Configuration Options"
-                schema:
-                  type: boolean
-                  default: false
-                  show_subquestions_if: true
-                  subquestions:
-                    - variable: enableFixedMiddlewares
-                      description: "These middlewares enforce a number of best practices."
-                      label: "Enable Default Middlewares"
-                      schema:
-                        type: boolean
-                        default: true
-                    - variable: ingressClassName
-                      label: "IngressClass Name"
-                      schema:
-                        type: string
-                        default: ""
-                    - variable: labelsList
-                      label: "Labels"
-                      schema:
-                        type: list
-                        default: []
-                        items:
-                          - variable: labelItem
-                            label: "Label"
-                            schema:
-                              additional_attrs: true
-                              type: dict
-                              attrs:
-                                - variable: name
-                                  label: "Name"
-                                  schema:
-                                    type: string
-                                - variable: value
-                                  label: "Value"
-                                  schema:
-                                    type: string
-                    - variable: annotationsList
-                      label: "Annotations"
-                      schema:
-                        type: list
-                        default: []
-                        items:
-                          - variable: annotationItem
-                            label: "Label"
-                            schema:
-                              additional_attrs: true
-                              type: dict
-                              attrs:
-                                - variable: name
-                                  label: "Name"
-                                  schema:
-                                    type: string
-                                - variable: value
-                                  label: "Value"
-                                  schema:
-                                    type: string
 
   - variable: ingressList
     label: "Add Manual Custom Ingresses"
@@ -778,19 +704,6 @@ questions:
                   type: string
                   default: "websecure"
                   required: true
-              - variable: middlewares
-                label: "Traefik Middlewares"
-                description: "Add previously created Traefik Middlewares to this Ingress"
-                schema:
-                  type: list
-                  default: []
-                  items:
-                    - variable: name
-                      label: "Name"
-                      schema:
-                        type: string
-                        default: ""
-                        required: true
 
   # Specify GPU configuration
   - variable: scaleGPU
