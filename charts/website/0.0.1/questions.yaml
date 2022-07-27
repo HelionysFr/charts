@@ -445,7 +445,7 @@ questions:
                       description: "UDP Protocol"
 
   - variable: ingress
-    label: ""
+    label: "Ingress"
     group: "Ingress"
     schema:
       type: dict
@@ -453,7 +453,7 @@ questions:
         - variable: main
           label: "Main Ingress"
           schema:
-            type: string
+            type: dict
             attrs:
 # Include{ingressDefault}
 
