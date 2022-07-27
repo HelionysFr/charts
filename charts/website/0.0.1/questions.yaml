@@ -441,6 +441,29 @@ questions:
                     - value: "UDP"
                       description: "UDP Protocol"
 
+  - variable: ingress
+    label: ""
+    group: "Ingress"
+    schema:
+      additional_attrs: true
+      type: dict
+      attrs:
+        - variable: main
+          label: "Main Ingress"
+          schema:
+            additional_attrs: true
+            type: dict
+            attrs:
+# Include{ingressDefault}
+
+# Include{ingressTLS}
+
+# Include{ingressTraefik}
+
+# Include{ingressExpert}
+
+# Include{ingressList}
+
   # Storage Options
   # Host path based volumes
   - variable: hostPathVolumes
