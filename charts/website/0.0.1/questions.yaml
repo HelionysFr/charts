@@ -34,140 +34,41 @@ portals:
     ports:
       - "$kubernetes-resource_configmap_portal_port"
 questions:
-  - variable: portal
-    group: "Container Image"
-    label: "Configure Portal Button"
+  # Image related
+  - variable: image
+    description: "Docker Image Details"
+    label: "Docker Image"
+    group: "Container Images"
     schema:
       type: dict
-      hidden: true
+      required: true
       attrs:
-        - variable: enabled
-          label: "Enable"
-          description: "enable the portal button"
+        - variable: repository
+          description: "Docker image repository"
+          label: "Image repository"
           schema:
-            hidden: true
-            editable: false
-            type: boolean
-            default: true
-  - variable: global
-    label: "global settings"
-    group: "Controller"
-    schema:
-      type: dict
-      hidden: true
-      attrs:
-        - variable: isSCALE
-          label: "flag this is SCALE"
+            type: string
+            required: true
+            default: "helionys/website"
+        - variable: tag
+          description: "Tag to use for specified image"
+          label: "Image Tag"
           schema:
-            type: boolean
-            default: true
-            hidden: true
-  - variable: controller
-    group: "Controller"
-    label: ""
-    schema:
-      additional_attrs: true
-      type: dict
-      attrs:
-        - variable: advanced
-          label: "Show Advanced Controller Settings"
+            type: string
+            default: "1.0.0"
+        - variable: pullPolicy
+          description: "Docker Image Pull Policy"
+          label: "Image Pull Policy"
           schema:
-            type: boolean
-            default: false
-            show_subquestions_if: true
-            subquestions:
-              - variable: type
-                description: "Please specify type of workload to deploy"
-                label: "(Advanced) Controller Type"
-                schema:
-                  type: string
-                  default: "deployment"
-                  required: true
-                  enum:
-                    - value: "deployment"
-                      description: "Deployment"
-                    - value: "statefulset"
-                      description: "Statefulset"
-                    - value: "daemonset"
-                      description: "Daemonset"
-              - variable: replicas
-                description: "Number of desired pod replicas"
-                label: "Desired Replicas"
-                schema:
-                  type: int
-                  default: 1
-                  required: true
-              - variable: strategy
-                description: "Please specify type of workload to deploy"
-                label: "(Advanced) Update Strategy"
-                schema:
-                  type: string
-                  default: "Recreate"
-                  required: true
-                  enum:
-                    - value: "Recreate"
-                      description: "Recreate: Kill existing pods before creating new ones"
-                    - value: "RollingUpdate"
-                      description: "RollingUpdate: Create new pods and then kill old ones"
-                    - value: "OnDelete"
-                      description: "(Legacy) OnDelete: ignore .spec.template changes"
-        - variable: expert
-          label: "Show Expert Configuration Options"
-          schema:
-            type: boolean
-            default: false
-            show_subquestions_if: true
-            subquestions:
-              - variable: extraArgs
-                label: "Extra Args"
-                schema:
-                  type: list
-                  default: []
-                  items:
-                    - variable: arg
-                      label: "arg"
-                      schema:
-                        type: string
-              - variable: labelsList
-                label: "Controller Labels"
-                schema:
-                  type: list
-                  default: []
-                  items:
-                    - variable: labelItem
-                      label: "Label"
-                      schema:
-                        additional_attrs: true
-                        type: dict
-                        attrs:
-                          - variable: name
-                            label: "Name"
-                            schema:
-                              type: string
-                          - variable: value
-                            label: "Value"
-                            schema:
-                              type: string
-              - variable: annotationsList
-                label: " Controller Annotations"
-                schema:
-                  type: list
-                  default: []
-                  items:
-                    - variable: annotationItem
-                      label: "Label"
-                      schema:
-                        additional_attrs: true
-                        type: dict
-                        attrs:
-                          - variable: name
-                            label: "Name"
-                            schema:
-                              type: string
-                          - variable: value
-                            label: "Value"
-                            schema:
-                              type: string
+            type: string
+            default: "IfNotPresent"
+            enum:
+              - value: "IfNotPresent"
+                description: "Only pull image if not present on host"
+              - value: "Always"
+                description: "Always pull image even if present on host"
+              - value: "Never"
+                description: "Never pull image even if it's not present on host"
   - variable: TZ
     label: "Timezone"
     group: "Container Configuration"
@@ -375,7 +276,7 @@ questions:
                             description: "This port exposes the container port on the service"
                             schema:
                               type: int
-                              default: 8123
+                              default: 3000
                               required: true
                           - variable: advanced
                             label: "Show Advanced settings"
@@ -410,7 +311,7 @@ questions:
                                   description: "The internal(!) port on the container the Application runs on"
                                   schema:
                                     type: int
-                                    default: 8123
+                                    default: 3000
 
   - variable: serviceexpert
     group: "Networking and Services"
