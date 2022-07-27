@@ -1,5 +1,5 @@
 groups:
-  - name: "Container Image"
+  - name: "Container Images"
     description: "Image to be used for container"
   - name: "Container Configuration"
     description: "additional container configuration"
