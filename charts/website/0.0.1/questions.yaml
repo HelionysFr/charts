@@ -453,7 +453,7 @@ questions:
         - variable: main
           label: "Main Ingress"
           schema:
-            type: dict
+            type: string
             attrs:
 # Include{ingressDefault}
 
