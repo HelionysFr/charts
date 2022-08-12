@@ -12,6 +12,6 @@ spec:
         - nc
       args:
         - "-vz"
-        - "{{ include "ix-chart.fullname" . }}"
+        - "{{ include "website.fullname" . }}"
         - "80"
   restartPolicy: Never
