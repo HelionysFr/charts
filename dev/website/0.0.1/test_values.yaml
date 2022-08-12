@@ -1,7 +1,7 @@
 # Default values for ix-chart.
 
 image:
-  repository: helionys/WebSite
+  repository: helionys/website
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: Dev
