@@ -33,9 +33,6 @@ emptyDirVolumes: []
 # Liveness Probe
 livenessProbe: null
 
-# Workload type
-workloadType: "Deployment"
-
 gpuConfiguration: {}
 securityContext:
   privileged: false
