@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ix-chart.fullname" . }}
+  name: {{ include "website.fullname" . }}
   labels:
-    {{- include "ix-chart.labels" . | nindent 4 }}
+    {{- include "website.labels" . | nindent 4 }}
 spec:
   type: NodePort
   ports:
@@ -16,5 +16,5 @@ spec:
       name: ix-{{ $.Release.Name }}-{{ $config.nodePort }}-{{ $index }}
     {{- end }}
   selector:
-    {{- include "ix-chart.selectorLabels" . | nindent 4 }}
+    {{- include "website.selectorLabels" . | nindent 4 }}
 {{- end }}

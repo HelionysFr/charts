@@ -1,9 +1,9 @@
 apiVersion: {{ template "apiVersion" . }}
 kind: {{ .Values.workloadType }}
 metadata:
-  name: {{ include "ix-chart.fullname" . }}
+  name: {{ include "website.fullname" . }}
   labels:
-    {{- include "ix-chart.labels" . | nindent 4 }}
+    {{- include "website.labels" . | nindent 4 }}
 spec:
   {{- if eq (include "workloadIsDeployment" .) "true" }}
     {{ include "deploymentSpec" . | nindent 2 }}

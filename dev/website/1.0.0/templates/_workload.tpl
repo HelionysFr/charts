@@ -93,7 +93,7 @@ Metadata for workload
 */}}
 {{- define "commonMetadataWorkload" }}
 labels:
-  {{- include "ix-chart.selectorLabels" . | nindent 2 }}
+  {{- include "website.selectorLabels" . | nindent 2 }}
 annotations:
   {{- include "workloadAnnotations" . | nindent 2 }}
 {{- end }}
@@ -111,7 +111,7 @@ strategy:
   type: {{ .Values.updateStrategy }}
 selector:
   matchLabels:
-    {{- include "ix-chart.selectorLabels" . | nindent 4 }}
+    {{- include "website.selectorLabels" . | nindent 4 }}
 template:
   metadata:
     {{ include "commonMetadataWorkload" . | nindent 4 }}
