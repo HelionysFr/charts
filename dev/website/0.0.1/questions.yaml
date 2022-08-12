@@ -131,7 +131,7 @@ questions:
           label: "Image Tag"
           schema:
             type: string
-            default: "Dev"
+            default: "1.0.0"
         - variable: pullPolicy
           description: "Docker Image Pull Policy"
           label: "Image Pull Policy"
