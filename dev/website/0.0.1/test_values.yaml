@@ -37,5 +37,3 @@ gpuConfiguration: {}
 securityContext:
   privileged: false
   capabilities: []
-tty: true
-stdin: true
