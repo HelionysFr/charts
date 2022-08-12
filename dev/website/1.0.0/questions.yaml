@@ -13,8 +13,6 @@ groups:
     description: "Persist and share data that is separate from the lifecycle of the container"
   - name: "Health Check"
     description: "Define mechanism to periodically probe the container to ensure it's functioning as desired"
-  - name: "Workload Details"
-    description: "Configure how workload should be deployed"
   - name: "Scaling/Upgrade Policy"
     description: "Configure how pods are replaced when configuration is upgraded"
   - name: "Restart Policy"
@@ -80,35 +78,6 @@ questions:
             min: 9000
             max: 65535
             default: 15000
-
-  # Workload type
-  - variable: workloadType
-    description: "Please specify type of workload to deploy"
-    label: "Workload Type"
-    group: "Workload Details"
-    schema:
-      type: string
-      hidden: true
-      default: "Deployment"
-      required: true
-      enum:
-        - value: "Deployment"
-          description: "Deploy a Deployment workload"
-        - value: "Job"
-          description: "Deploy job workload"
-        - value: "CronJob"
-          description: "Deploy cronjob workload"
-
-  # Cronjob schedule
-  - variable: cronSchedule
-    label: "Cron Schedule"
-    group: "Workload Details"
-    schema:
-      hidden: true
-      type: cron
-      show_if: [["workloadType", "=", "CronJob"]]
-      default:
-        minute: "5"
 
   # Image related
   - variable: image
@@ -561,46 +530,6 @@ questions:
       $ref:
         - "definitions/gpuConfiguration"
       attrs: []
-
-  - variable: tty
-    label: "Enable TTY"
-    description: "Determines whether containers in a pod runs with TTY enabled. By default pod has it disabled."
-    group: "Workload Details"
-    schema:
-      type: boolean
-      default: false
-
-  - variable: stdin
-    label: "Enable STDIN"
-    description: "Determines whether containers in a pod runs with stdin enabled. By default pod has it disabled."
-    group: "Workload Details"
-    schema:
-      type: boolean
-      default: false
-
-  - variable: securityContext
-    label: "Security Context"
-    group: "Workload Details"
-    schema:
-      type: dict
-      attrs:
-        - variable: privileged
-          label: "Privileged Mode"
-          description: "Determines if any container in a pod can enable privileged mode. By default a container is not allowed to access any devices on the host, but a 'privileged' container is given access to all devices on the host. This allows the container nearly all the same access as processes running on the host."
-          schema:
-            type: boolean
-            default: false
-        - variable: capabilities
-          label: "Capabilities"
-          description: "With Linux capabilities, you can grant certain privileges to a process without granting all the privileges of the root user."
-          schema:
-            type: list
-            items:
-              - variable: capability
-                description: "Add Capability"
-                label: "Add Capability"
-                schema:
-                  type: string
 
   - variable: enableResourceLimits
     label: "Enable Pod resource limits"
